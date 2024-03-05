@@ -1,9 +1,9 @@
-const IncomeSchema= require("../models/IncomeModel")
+const ExpenseSchema= require("../models/ExpenseModel")
 
-exports.addIncome = async (req, res) => {
+exports.addExpense = async (req, res) => {
     const {title, amount, date, category, project,description}  = req.body
 
-    const income = IncomeSchema({
+    const expense = ExpenseSchema({
         title,
         amount,
         date,
@@ -20,33 +20,33 @@ exports.addIncome = async (req, res) => {
         if(amount <= 0 || !amount === 'number'){
             return res.status(400).json({message: 'Amount must be a positive number!'})
         }
-        await income.save()
-        res.status(200).json({message: 'Income Added'})
+        await expense.save()
+        res.status(200).json({message: 'Expense Added'})
     } catch (error) {
         res.status(500).json({message: 'Server Error'})
         console.error(error.message);
 
     }
 
-    console.log(income)
+    console.log(expense)
 }
 
-exports.getIncomes = async(req,res) => {
+exports.getExpenses = async(req,res) => {
     try{
-        //fetch income records from the database using the IncomeSchema model and sorts them by creation date in descending order. 
-        const incomes = await IncomeSchema.find().sort({createdAt: -1}) //
-        res.status(200).json(incomes);
+        //fetch income records from the database using the Expenseschema model and sorts them by creation date in descending order. 
+        const Expenses = await ExpenseSchema.find().sort({createdAt: -1}) //
+        res.status(200).json(expenses);
     }catch(error){
         res.status(400).json({message:'server error'})
     }
 }
 
-exports.deleteIncomes = async(req,res) => {
+exports.deleteExpenses = async(req,res) => {
    
         const {id} = req.params;
-        IncomeSchema.findByIdAndDelete(id)
-          .then((income)=>{
-            res.status(200).json({message: 'Income Deleted'})
+        ExpenseSchema.findByIdAndDelete(id)
+          .then((expense)=>{
+            res.status(200).json({message: 'Expense Deleted'})
           })
           .catch((error)=>{
             res.status(500).json({message: 'Server Error'})
